@@ -3,15 +3,21 @@
 The control plane nodes _must be_ odd number.
 ```shell
 # 1st control plane node
+sudo su -
+
 systemctl disable firewalld --now
 curl -sfL https://get.k3s.io | sh -s - server --cluster-init
-SERVER_NODE_TOKEN=`sudo cat /var/lib/rancher/k3s/server/node-token`
+SERVER_NODE_TOKEN=`cat /var/lib/rancher/k3s/server/node-token`
 
 # 2nd, 3rd control plane nodes
+sudo su -
+
 systemctl disable firewalld --now
 curl -sfL https://get.k3s.io | K3S_URL=https://<1st_CONTROL_PLANE_NODE_IP_FQDN>:6443 K3S_TOKEN=$SERVER_NODE_TOKEN sh -s - server
 
 # worker nodes
+sudo su -
+
 systemctl disable firewalld --now
 curl -sfL https://get.k3s.io | K3S_URL=https://<1st_CONTROL_PLANE_NODE_IP_FQDN>:6443 K3S_TOKEN=$SERVER_NODE_TOKEN sh -
 ```
